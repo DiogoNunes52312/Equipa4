@@ -122,13 +122,13 @@ DROP TABLE IF EXISTS `notificacao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notificacao` (
-  `notificacao_id` int NOT NULL AUTO_INCREMENT,
+  `id_notificacao` int NOT NULL AUTO_INCREMENT,
   `utilizador_id` int NOT NULL,
   `titulo` varchar(150) NOT NULL,
   `mensagem` text NOT NULL,
   `lida` tinyint(1) DEFAULT '0',
   `data_envio` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`notificacao_id`),
+  PRIMARY KEY (`id_notificacao`),
   KEY `fk_notificacao_utilizador` (`utilizador_id`),
   CONSTRAINT `fk_notificacao_utilizador` FOREIGN KEY (`utilizador_id`) REFERENCES `utilizador` (`id_utilizador`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -182,4 +182,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-26 16:43:00
+-- Dump completed on 2025-10-27 11:27:37
