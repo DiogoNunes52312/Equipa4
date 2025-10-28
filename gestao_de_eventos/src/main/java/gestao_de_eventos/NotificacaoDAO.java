@@ -4,61 +4,61 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
-public class EventoDAO {
+public class NotificacaoDAO {
 
-    public void inserir(Evento evento) {
+    public void inserir(Notificacao n) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.persist(evento);
+            session.persist(n);
             tx.commit();
-            System.out.println("Evento inserido com sucesso!");
+            System.out.println(" Notificação inserida com sucesso!");
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao inserir evento: " + e.getMessage());
+            System.err.println(" Erro ao inserir notificação: " + e.getMessage());
         }
     }
 
-    public void atualizar(Evento evento) {
+    public void atualizar(Notificacao n) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.merge(evento);
+            session.merge(n);
             tx.commit();
-            System.out.println(" Evento atualizado com sucesso!");
+            System.out.println(" Notificação atualizada!");
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao atualizar evento: " + e.getMessage());
+            System.err.println(" Erro ao atualizar notificação: " + e.getMessage());
         }
     }
 
     public void eliminar(int id) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Evento evento = session.get(Evento.class, id);
-            if (evento != null) {
+            Notificacao n = session.get(Notificacao.class, id);
+            if (n != null) {
                 tx = session.beginTransaction();
-                session.remove(evento);
+                session.remove(n);
                 tx.commit();
-                System.out.println(" Evento eliminado com sucesso!");
+                System.out.println(" Notificação eliminada!");
             } else {
-                System.out.println(" Evento não encontrado!");
+                System.out.println(" Notificação não encontrada!");
             }
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao eliminar evento: " + e.getMessage());
+            System.err.println(" Erro ao eliminar notificação: " + e.getMessage());
         }
     }
 
-    public Evento procurarPorId(int id) {
+    public Notificacao procurarPorId(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Evento.class, id);
+            return session.get(Notificacao.class, id);
         }
     }
 
-    public List<Evento> listar() {
+    public List<Notificacao> listar() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Evento", Evento.class).list();
+            return session.createQuery("from Notificacao", Notificacao.class).list();
         }
     }
 }

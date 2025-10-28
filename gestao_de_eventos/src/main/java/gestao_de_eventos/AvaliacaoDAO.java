@@ -4,61 +4,61 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
 
-public class EventoDAO {
+public class AvaliacaoDAO {
 
-    public void inserir(Evento evento) {
+    public void inserir(Avaliacao avaliacao) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.persist(evento);
+            session.persist(avaliacao);
             tx.commit();
-            System.out.println("Evento inserido com sucesso!");
+            System.out.println(" Avaliação inserida com sucesso!");
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao inserir evento: " + e.getMessage());
+            System.err.println(" Erro ao inserir avaliação: " + e.getMessage());
         }
     }
 
-    public void atualizar(Evento evento) {
+    public void atualizar(Avaliacao avaliacao) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.merge(evento);
+            session.merge(avaliacao);
             tx.commit();
-            System.out.println(" Evento atualizado com sucesso!");
+            System.out.println(" Avaliação atualizada!");
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao atualizar evento: " + e.getMessage());
+            System.err.println(" Erro ao atualizar avaliação: " + e.getMessage());
         }
     }
 
     public void eliminar(int id) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Evento evento = session.get(Evento.class, id);
-            if (evento != null) {
+            Avaliacao a = session.get(Avaliacao.class, id);
+            if (a != null) {
                 tx = session.beginTransaction();
-                session.remove(evento);
+                session.remove(a);
                 tx.commit();
-                System.out.println(" Evento eliminado com sucesso!");
+                System.out.println("  Avaliação eliminada!");
             } else {
-                System.out.println(" Evento não encontrado!");
+                System.out.println(" Avaliação não encontrada!");
             }
         } catch (Exception e) {
             if (tx != null) tx.rollback();
-            System.err.println(" Erro ao eliminar evento: " + e.getMessage());
+            System.err.println("❌ Erro ao eliminar avaliação: " + e.getMessage());
         }
     }
 
-    public Evento procurarPorId(int id) {
+    public Avaliacao procurarPorId(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Evento.class, id);
+            return session.get(Avaliacao.class, id);
         }
     }
 
-    public List<Evento> listar() {
+    public List<Avaliacao> listar() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Evento", Evento.class).list();
+            return session.createQuery("from Avaliacao", Avaliacao.class).list();
         }
     }
 }

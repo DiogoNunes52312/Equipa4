@@ -8,29 +8,32 @@ public class TesteUtilizador {
     private static final UtilizadorDAO dao = new UtilizadorDAO();
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void menu(String[] args) {
         int opcao;
 
         do {
-            System.out.println("\n===== GESTÃO DE UTILIZADORES =====");
+            System.out.println("\n GESTÃO DE UTILIZADORES ");
             System.out.println("1. Inserir novo utilizador");
             System.out.println("2. Editar utilizador existente");
             System.out.println("3. Pesquisar utilizador por email");
             System.out.println("4. Listar todos os utilizadores");
             System.out.println("5. Alterar estado (Ativo/Inativo)");
-            System.out.println("0. Sair");
+            System.out.println("0.  Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
             opcao = sc.nextInt();
-            sc.nextLine(); // limpar buffer
+            sc.nextLine(); 
 
             switch (opcao) {
             case 1: inserirUtilizador(); break;
             case 2: editarUtilizador(); break;
             case 3: pesquisarUtilizador(); break;
-            case 4: listarUtilizadores(); break;
+            case 4: visualizarUtilizadores(); break;
             case 5: alterarEstado(); break;
-            case 0: System.out.println("A sair..."); break;
-            default: System.out.println("❌ Opção inválida!");
+            case 0: {
+                System.out.println(" A voltar ao menu principal...");
+                return; 
+            }
+            default: System.out.println("Opção inválida!");
         }
 
         } while (opcao != 0);
@@ -75,7 +78,7 @@ public class TesteUtilizador {
 
         Utilizador u = dao.procurarPorEmail(email);
         if (u == null) {
-            System.out.println("❌ Utilizador não encontrado!");
+            System.out.println(" Utilizador não encontrado!");
             return;
         }
 
@@ -96,7 +99,7 @@ public class TesteUtilizador {
 
         Utilizador u = dao.procurarPorEmail(email);
         if (u == null) {
-            System.out.println("❌ Nenhum utilizador encontrado!");
+            System.out.println(" Nenhum utilizador encontrado!");
         } else {
             System.out.println("ID: " + u.getId());
             System.out.println("Nome: " + u.getNomeUtilizador());
@@ -106,12 +109,12 @@ public class TesteUtilizador {
         }
     }
 
-    private static void listarUtilizadores() {
+    private static void visualizarUtilizadores() {
         List<Utilizador> lista = dao.listar();
         if (lista.isEmpty()) {
-            System.out.println("⚠️ Nenhum utilizador encontrado!");
+            System.out.println(" Nenhum utilizador encontrado!");
         } else {
-            System.out.println("\n--- Lista de Utilizadores ---");
+            System.out.println("\n Lista de Utilizadores ");
             for (Utilizador u : lista) {
                 System.out.printf("%d | %-20s | %-25s | %-12s | %-8s%n",
                         u.getId(),

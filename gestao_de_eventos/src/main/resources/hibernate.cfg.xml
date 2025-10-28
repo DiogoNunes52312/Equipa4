@@ -63,5 +63,8 @@ Each class must include its full package name.
 -->
 <mapping class="gestao_de_eventos.Utilizador"/>
 <mapping class="gestao_de_eventos.Evento"/>
+<mapping class="gestao_de_eventos.Inscricao"/>
+<mapping class="gestao_de_eventos.Avaliacao"/>
+<mapping class="gestao_de_eventos.Notificacao"/>
 </session-factory>
 </hibernate-configuration>

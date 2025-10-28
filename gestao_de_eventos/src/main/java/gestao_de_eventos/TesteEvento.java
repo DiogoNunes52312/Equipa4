@@ -9,18 +9,18 @@ public class TesteEvento {
     private static final EventoDAO dao = new EventoDAO();
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void menu(String[] args) {
         int opcao;
 
         do {
-            System.out.println("\n===== GESTÃO DE EVENTOS =====");
+            System.out.println("\n GESTÃO DE EVENTOS ");
             System.out.println("1. Inserir novo evento");
             System.out.println("2. Editar evento existente");
             System.out.println("3. Pesquisar evento por ID");
             System.out.println("4. Listar todos os eventos");
             System.out.println("5. Alterar estado do evento");
             System.out.println("6. Eliminar evento");
-            System.out.println("0. Sair");
+            System.out.println("0. Voltar para o menu principal");
             System.out.print("Escolha uma opção: ");
             opcao = sc.nextInt();
             sc.nextLine(); 
@@ -31,7 +31,10 @@ public class TesteEvento {
                 case 3: pesquisarEvento(); break;
                 case 4: listarEventos(); break;
                 case 5: alterarEstadoEvento(); break;
-                case 0: System.out.println("A sair..."); break;
+                case 0: {
+                    System.out.println(" A voltar ao menu principal...");
+                    return; 
+                }
                 default: System.out.println(" Opção inválida!");
             }
         } while (opcao != 0);
@@ -40,7 +43,6 @@ public class TesteEvento {
         sc.close();
     }
 
-    // ➕ Inserir novo evento
     private static void inserirEvento() {
         Evento e = new Evento();
 
@@ -80,7 +82,7 @@ public class TesteEvento {
 
         Evento e = dao.procurarPorId(id);
         if (e == null) {
-            System.out.println("❌ Evento não encontrado!");
+            System.out.println(" Evento não encontrado!");
             return;
         }
 
@@ -103,7 +105,6 @@ public class TesteEvento {
         dao.atualizar(e);
     }
 
-    // 🔍 Pesquisar evento
     private static void pesquisarEvento() {
         System.out.print("ID do evento: ");
         int id = sc.nextInt();
@@ -111,7 +112,7 @@ public class TesteEvento {
 
         Evento e = dao.procurarPorId(id);
         if (e == null) {
-            System.out.println("❌ Nenhum evento encontrado!");
+            System.out.println(" Nenhum evento encontrado!");
         } else {
             System.out.println("ID: " + e.getId());
             System.out.println("Título: " + e.getTitulo());
@@ -123,13 +124,13 @@ public class TesteEvento {
         }
     }
 
-    // 📋 Listar todos
+
     private static void listarEventos() {
         List<Evento> lista = dao.listar();
         if (lista.isEmpty()) {
-            System.out.println("⚠️ Nenhum evento encontrado!");
+            System.out.println(" Nenhum evento encontrado!");
         } else {
-            System.out.println("\n--- Lista de Eventos ---");
+            System.out.println("\n Lista de Eventos ");
             for (Evento e : lista) {
                 System.out.printf("%d | %-25s | %-15s | %-10s | %-10s%n",
                         e.getId(),
@@ -141,7 +142,6 @@ public class TesteEvento {
         }
     }
 
-    // 🔄 Alterar estado
     private static void alterarEstadoEvento() {
         System.out.print("ID do evento: ");
         int id = sc.nextInt();
@@ -149,7 +149,7 @@ public class TesteEvento {
 
         Evento e = dao.procurarPorId(id);
         if (e == null) {
-            System.out.println("❌ Evento não encontrado!");
+            System.out.println(" Evento não encontrado!");
             return;
         }
 
@@ -174,7 +174,7 @@ public class TesteEvento {
         }
 
         dao.atualizar(e);
-        System.out.println("✅ Estado do evento atualizado!");
+        System.out.println(" Estado do evento atualizado!");
     }
 
     
