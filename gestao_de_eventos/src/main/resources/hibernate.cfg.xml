@@ -36,7 +36,7 @@ Use the same username you configured in MySQL.
 -->
 <property name="connection.username">root</property>
 <!-- Set the password - write the pwd you choose when installing MySQL -->
-<property name="connection.password">Diogo2006!</property>
+<property name="connection.password">yourpassword</property>
 <!-- ============================== -->
 <!-- Hibernate Behavior Settings -->
 <!-- ============================== -->

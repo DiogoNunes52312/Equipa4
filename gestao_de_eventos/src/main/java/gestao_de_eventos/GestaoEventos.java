@@ -22,13 +22,13 @@ public class GestaoEventos {
             sc.nextLine();
 
             switch (opcao) {
-                case 1 -> Utilizadores();
-                case 2 -> Eventos();
-                case 3 -> Inscricoes();
-                case 4 -> Avaliacoes();
-                case 5 -> Notificacoes();
-                case 0 -> System.out.println("A encerrar o sistema.");
-                default -> System.out.println("Opção inválida!");
+                case 1 : Utilizadores();
+                case 2 : Eventos();
+                case 3 : Inscricoes();
+                case 4 : Avaliacoes();
+                case 5 : Notificacoes();
+                case 0 : System.out.println("A encerrar o sistema.");
+                default : System.out.println("Opção inválida!");
             }
         } while (opcao != 0);
 
