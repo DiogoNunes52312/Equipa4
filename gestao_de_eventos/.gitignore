@@ -16,3 +16,4 @@
 out/
 # Sensitive configurations (Hibernate, credentials, etc.)
 src/main/resources/hibernate.cfg.xml
+/target/

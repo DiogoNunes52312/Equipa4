@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "hibernate-configuration-3.0.dtd">
+
 <!--
 Root element of the Hibernate configuration file.
 It defines all settings needed to create the SessionFactory,
@@ -35,7 +36,7 @@ Use the same username you configured in MySQL.
 -->
 <property name="connection.username">root</property>
 <!-- Set the password - write the pwd you choose when installing MySQL -->
-<property name="connection.password">yourPassword</property>
+<property name="connection.password">Diogo2006!</property>
 <!-- ============================== -->
 <!-- Hibernate Behavior Settings -->
 <!-- ============================== -->
@@ -60,6 +61,7 @@ Useful for debugging and understanding what Hibernate executes.
 List all annotated entity classes used by Hibernate.
 Each class must include its full package name.
 -->
-<mapping class="upt.lp.GestorDeEventos.aaa" />
+<mapping class="gestao_de_eventos.Utilizador"/>
+<mapping class="gestao_de_eventos.Evento"/>
 </session-factory>
 </hibernate-configuration>
