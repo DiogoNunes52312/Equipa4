@@ -1,6 +1,6 @@
 # MAVEN
 # Folder where Maven stores compiled files (.class, .jar)
-
+/target
 # ECLIPSE
 # Local Eclipse configuration files and folders
 .classpath
