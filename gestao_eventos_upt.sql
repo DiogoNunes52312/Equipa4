@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `gestao_eventos_upt` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `gestao_eventos_upt`;
+CREATE DATABASE  IF NOT EXISTS `gestordeeventosupt` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `gestordeeventosupt`;
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: gestao_eventos_upt
+-- Host: 127.0.0.1    Database: gestordeeventosupt
 -- ------------------------------------------------------
 -- Server version	8.0.43
 
@@ -26,18 +26,17 @@ DROP TABLE IF EXISTS `avaliacao`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `avaliacao` (
   `id_avaliacao` int NOT NULL AUTO_INCREMENT,
+  `comentario` text,
+  `data_avaliacao` datetime(6) NOT NULL,
+  `pontuacao` int NOT NULL,
   `id_evento` int NOT NULL,
   `id_participante` int NOT NULL,
-  `pontuacao` int NOT NULL,
-  `comentario` text,
-  `data_avaliacao` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_avaliacao`),
-  KEY `fk_avaliacao_evento` (`id_evento`),
-  KEY `fk_avaliacao_participante` (`id_participante`),
-  CONSTRAINT `fk_avaliacao_evento` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id_evento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_avaliacao_participante` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `avaliacao_chk_1` CHECK ((`pontuacao` between 1 and 5))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK457mrh3tdfsiw6anbttvs09g9` (`id_evento`),
+  KEY `FK2jd7igxl6umgpe8cm9r9e3p1o` (`id_participante`),
+  CONSTRAINT `FK2jd7igxl6umgpe8cm9r9e3p1o` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`),
+  CONSTRAINT `FK457mrh3tdfsiw6anbttvs09g9` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id_evento`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +45,7 @@ CREATE TABLE `avaliacao` (
 
 LOCK TABLES `avaliacao` WRITE;
 /*!40000 ALTER TABLE `avaliacao` DISABLE KEYS */;
+INSERT INTO `avaliacao` VALUES (1,'Evento muito atrativo','2025-10-28 20:13:36.570084',5,1,1),(2,'Não gostei muito da ultima parte do evento','2025-10-28 20:14:17.901752',2,1,2);
 /*!40000 ALTER TABLE `avaliacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,21 +58,19 @@ DROP TABLE IF EXISTS `evento`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `evento` (
   `id_evento` int NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(100) NOT NULL,
-  `descricao` text,
-  `categoria` varchar(50) DEFAULT NULL,
-  `local` varchar(100) DEFAULT NULL,
-  `data_inicio` datetime NOT NULL,
-  `data_fim` datetime NOT NULL,
-  `capacidade` int NOT NULL,
-  `estado_evento` enum('RASCUNHO','ATIVO','FECHADO','CANCELADO','CONCLUIDO') DEFAULT 'RASCUNHO',
-  `id_organizador` int NOT NULL,
+  `capacidade_evento` int DEFAULT NULL,
+  `categoria_evento` varchar(50) DEFAULT NULL,
+  `data_fim` datetime(6) DEFAULT NULL,
+  `data_inicio` datetime(6) DEFAULT NULL,
+  `descricao_evento` text,
+  `estado_evento` enum('ATIVO','CANCELADO','CONCLUIDO','FECHADO','RASCUNHO') DEFAULT NULL,
+  `local_evento` varchar(100) DEFAULT NULL,
+  `titulo_evento` varchar(100) NOT NULL,
+  `id_organizador` int DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
-  KEY `fk_evento_organizador` (`id_organizador`),
-  CONSTRAINT `fk_evento_organizador` FOREIGN KEY (`id_organizador`) REFERENCES `utilizador` (`id_utilizador`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `evento_chk_1` CHECK ((`capacidade` > 0)),
-  CONSTRAINT `evento_chk_2` CHECK ((`data_fim` > `data_inicio`))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FKj3pypdbr8xmoskv7j7vdcfrft` (`id_organizador`),
+  CONSTRAINT `FKj3pypdbr8xmoskv7j7vdcfrft` FOREIGN KEY (`id_organizador`) REFERENCES `utilizador` (`id_utilizador`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,6 +79,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
+INSERT INTO `evento` VALUES (1,200,'nao sei','2025-11-01 22:00:00.000000','2025-11-01 18:00:00.000000','nao sei','ATIVO','Porto','feira da ladra',NULL),(2,300,'teste3','2025-12-12 12:40:00.000000','2025-12-12 12:12:00.000000','teste1','RASCUNHO','teste5','teste2',NULL);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,16 +92,16 @@ DROP TABLE IF EXISTS `inscricao`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inscricao` (
   `id_inscricao` int NOT NULL AUTO_INCREMENT,
+  `data_inscricao` datetime(6) NOT NULL,
+  `estado_inscricao` enum('CANCELADA','CONFIRMADA','PENDENTE') NOT NULL,
   `id_evento` int NOT NULL,
   `id_participante` int NOT NULL,
-  `data_inscricao` datetime DEFAULT CURRENT_TIMESTAMP,
-  `estado_inscricao` enum('CONFIRMADA','LISTA_ESPERA','CANCELADA') DEFAULT 'CONFIRMADA',
   PRIMARY KEY (`id_inscricao`),
-  UNIQUE KEY `inscricao_UNIQUE` (`id_evento`,`id_participante`),
-  KEY `fk_inscricao_participante` (`id_participante`),
-  CONSTRAINT `fk_inscricao_evento` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id_evento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_inscricao_participante` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK59safqf92bkqk0ph66jl09rmj` (`id_evento`),
+  KEY `FK8h87iacerw6ulnj4hhpah9kuu` (`id_participante`),
+  CONSTRAINT `FK59safqf92bkqk0ph66jl09rmj` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id_evento`),
+  CONSTRAINT `FK8h87iacerw6ulnj4hhpah9kuu` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,6 +110,7 @@ CREATE TABLE `inscricao` (
 
 LOCK TABLES `inscricao` WRITE;
 /*!40000 ALTER TABLE `inscricao` DISABLE KEYS */;
+INSERT INTO `inscricao` VALUES (1,'2025-10-28 20:01:43.879668','PENDENTE',2,1),(3,'2025-10-28 20:03:27.204203','CONFIRMADA',1,2);
 /*!40000 ALTER TABLE `inscricao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,15 +123,15 @@ DROP TABLE IF EXISTS `notificacao`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notificacao` (
   `id_notificacao` int NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(150) NOT NULL,
+  `data_envio` datetime(6) NOT NULL,
+  `estado_notificacao` enum('LIDA','NAO_LIDA') NOT NULL,
   `mensagem` text NOT NULL,
-  `lida` tinyint(1) DEFAULT '0',
-  `data_envio` datetime DEFAULT CURRENT_TIMESTAMP,
+  `titulo` varchar(100) NOT NULL,
   `id_participante` int NOT NULL,
   PRIMARY KEY (`id_notificacao`),
-  KEY `fk_notificacao_utilizador` (`id_participante`),
-  CONSTRAINT `fk_notificacao_utilizador` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FKjhythovprqeqs1n5v6mtryhmm` (`id_participante`),
+  CONSTRAINT `FKjhythovprqeqs1n5v6mtryhmm` FOREIGN KEY (`id_participante`) REFERENCES `utilizador` (`id_utilizador`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,6 +140,7 @@ CREATE TABLE `notificacao` (
 
 LOCK TABLES `notificacao` WRITE;
 /*!40000 ALTER TABLE `notificacao` DISABLE KEYS */;
+INSERT INTO `notificacao` VALUES (1,'2025-10-28 20:23:32.518535','LIDA','ola','Importante',3);
 /*!40000 ALTER TABLE `notificacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,15 +153,14 @@ DROP TABLE IF EXISTS `utilizador`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `utilizador` (
   `id_utilizador` int NOT NULL AUTO_INCREMENT,
-  `nome_utilizador` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `estado_utilizador` enum('ATIVO','INATIVO') NOT NULL,
+  `nome_utilizador` varchar(100) NOT NULL,
   `senha_utilizador` varchar(255) NOT NULL,
-  `tipo_utilizador` enum('ADMIN','ORGANIZADOR','PARTICIPANTE') DEFAULT 'PARTICIPANTE',
-  `estado_utilizador` enum('ATIVO','INATIVO') DEFAULT 'ATIVO',
+  `tipo_utilizador` enum('ADMIN','ORGANIZADOR','PARTICIPANTE') NOT NULL,
   PRIMARY KEY (`id_utilizador`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  CONSTRAINT `utilizador_chk_1` CHECK ((`email` like _utf8mb4'%@%'))
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `UK_eougu510uft70icifeafv6cll` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +169,7 @@ CREATE TABLE `utilizador` (
 
 LOCK TABLES `utilizador` WRITE;
 /*!40000 ALTER TABLE `utilizador` DISABLE KEYS */;
-INSERT INTO `utilizador` VALUES (1,'Administrador','admin@upt.pt','admin123','ADMIN','ATIVO');
+INSERT INTO `utilizador` VALUES (1,'joao@upt.pt','INATIVO','joao','joao1234','PARTICIPANTE'),(2,'paulo@upt.pt','ATIVO','paulo','paulo123','PARTICIPANTE'),(3,'admin@upt.pt','ATIVO','admin','admin123','ADMIN'),(4,'organizador@upt.pt','ATIVO','organizador','organizador123','ORGANIZADOR'),(5,'diogo@upt.pt','ATIVO','Diogo','diogo123','PARTICIPANTE');
 /*!40000 ALTER TABLE `utilizador` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -182,4 +182,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-27 12:01:19
+-- Dump completed on 2025-10-28 21:27:53
